@@ -66,7 +66,8 @@ soup = BeautifulSoup(svg_file,features="html.parser")
 animation_timers = [_clean_time_element(time_element.get("dur"))
 		 for time_element in soup.findAll('animate')]
 
-total_time_animated = ceil(max(animation_timers)) 
+# Default Animation Play Times = 1
+total_time_animated = ceil(max(animation_timers, default=1))
 
 
 ########################################################
@@ -144,7 +145,7 @@ with contextlib.ExitStack() as stack:
     # https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html
     img.save(fp=fp_out, format='GIF', append_images=imgs,
              save_all=True,
-             duration=(total_time_animated * 1000)/len(files) - 20, # the math here feels off because the resulting gif is too slow thus -10 is implemented
+             duration=(total_time_animated * 1000)/len(files),	# "duration" here can be increased or decreased depending on your need
               loop=0)
 
 
